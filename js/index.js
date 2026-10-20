@@ -42,11 +42,21 @@ Vue.createApp({
     }
   },
   created() {
-    this.lockInd = getStorage('lockInd') || 0
+    const local = loadLocalProgress()
+    this.lockInd = local.lockInd || 0
     this.bgPlay = getStorage('bgPlay') === null ? true : getStorage('bgPlay')
     this.freeUnlock = getStorage('freeUnlock') === null ? true : getStorage('freeUnlock')
     this.theme = getStorage('theme') || 'default'
-    // if (!this.bgPlay) this.notStart = false
+    // URL 快捷同步：?lock=123
+    try {
+      const q = new URLSearchParams(location.search).get('lock')
+      if (q !== null && q !== '' && !isNaN(Number(q))) {
+        this.lockInd = parseInt(q, 10)
+        saveLocalProgress(this.lockInd)
+      }
+    } catch (e) {
+      console.warn('解析 lock 参数失败 reason=lock_query_fail', e)
+    }
   },
   mounted() {
     this.audioBg = document.getElementById('audioBg')
@@ -60,11 +70,21 @@ Vue.createApp({
         if (this.bgPlay && this.hanziShow) this.playBg(true)
       }
     });
-    if (this.lockInd > 420) {
-      let temp = document.createElement('script')
-      temp.src = './js/lib/dataWriter1.js'
-      document.body.appendChild(temp)
-    }
+    syncProgressFromCloud('data/progress.json').then((p) => {
+      try {
+        if (p && typeof p.lockInd === 'number' && p.lockInd !== this.lockInd) {
+          this.lockInd = p.lockInd
+          if (p.from === 'cloud') dnotify('已从云端进度同步到第 ' + p.lockInd + ' 关', 2500)
+        }
+        if (this.lockInd > 420) {
+          let temp = document.createElement('script')
+          temp.src = './js/lib/dataWriter1.js'
+          document.body.appendChild(temp)
+        }
+      } catch (e) {
+        console.warn('应用云端进度失败 reason=apply_cloud_fail', e)
+      }
+    })
   },
   methods: {
     speakText: speakText,
@@ -243,14 +263,32 @@ Vue.createApp({
     },
     addLockInd() {
       this.lockInd += 1
-      setStorage('lockInd', this.lockInd)
+      saveLocalProgress(this.lockInd)
     },
     flagClick() {
       this.flag++
       if (this.flag == 10) {
-        let ind = window.prompt('请输入解锁关卡')
-        if (ind && ind.trim() && !isNaN(ind)) {
-          setStorage('lockInd', parseInt(ind))
+        this.flag = 0
+        let tip = '当前进度 ' + this.lockInd + '\n输入关卡数字可改进度\n输入 sync 复制云端进度文件内容（粘贴到 data/progress.json 后推送即可多端同步）'
+        let ind = window.prompt(tip)
+        if (!ind || !ind.trim()) return
+        ind = ind.trim()
+        if (ind.toLowerCase() === 'sync') {
+          try {
+            const text = progressJsonText(this.lockInd)
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(() => alert('已复制，请粘贴覆盖 data/progress.json 并推送到 GitHub'))
+            } else {
+              window.prompt('请手动复制以下内容到 data/progress.json', text)
+            }
+          } catch (e) {
+            console.warn('导出进度失败 reason=export_progress_fail', e)
+            alert('导出失败，请重试')
+          }
+          return
+        }
+        if (!isNaN(ind)) {
+          saveLocalProgress(parseInt(ind, 10))
           location.reload()
         }
       }

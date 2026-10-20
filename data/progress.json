@@ -1,0 +1,5 @@
+{
+  "lockInd": 0,
+  "updatedAt": 0,
+  "note": "多端同步：改 lockInd/updatedAt 后推送到 GitHub，其他设备刷新即可拉取；updatedAt 用毫秒时间戳，越大越新"
+}

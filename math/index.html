@@ -6,9 +6,20 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>哪吒学数学</title>
   <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="../css/gate.css">
+  <script>try{var __g=JSON.parse(sessionStorage.getItem('hanzi_gate_ok')||'null');if(__g&&__g.ok)document.documentElement.classList.add('gate-ok')}catch(e){}</script>
   <script src="../js/lib/vue.global.prod.min.js"></script>
 </head>
 <body>
+  <div id="gate-mask" class="gate-mask">
+    <div class="gate-box">
+      <h2>哪吒学汉字</h2>
+      <p>请输入访问密码</p>
+      <input id="gate-input" type="password" inputmode="numeric" autocomplete="off" placeholder="密码">
+      <button id="gate-btn" type="button">进入</button>
+      <div id="gate-err" class="gate-err"></div>
+    </div>
+  </div>
   <div id="app">
     <!-- 控制选项区 -->
     <div class="controls">
@@ -45,6 +56,7 @@
     </div>
   </div>
 
+  <script src="../js/gate.js"></script>
   <script src="../js/utils.js"></script>
   <script src="index.js"></script>
 </body>

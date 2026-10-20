@@ -5,10 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>儿童古诗词学习</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../css/gate.css">
+    <script>try{var __g=JSON.parse(sessionStorage.getItem('hanzi_gate_ok')||'null');if(__g&&__g.ok)document.documentElement.classList.add('gate-ok')}catch(e){}</script>
     <!-- 引入 Vue.js -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.17/vue.global.prod.min.js"></script> -->
 </head>
 <body id="app" v-cloak>
+    <div id="gate-mask" class="gate-mask">
+      <div class="gate-box">
+        <h2>哪吒学汉字</h2>
+        <p>请输入访问密码</p>
+        <input id="gate-input" type="password" inputmode="numeric" autocomplete="off" placeholder="密码">
+        <button id="gate-btn" type="button">进入</button>
+        <div id="gate-err" class="gate-err"></div>
+      </div>
+    </div>
     <div class="app_wrap" :class="currentTheme"> <!-- 绑定当前主题类 -->
         <div class="container" v-show="!showList">
             <!-- 左侧导航栏 -->
@@ -122,6 +133,7 @@
         </div>
     </div>
 
+    <script src="../js/gate.js"></script>
     <script src="../js/lib/vue.global.prod.min.js"></script>
     <script src="../js/utils.js"></script>
     <script src="data.js"></script>

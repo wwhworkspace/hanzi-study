@@ -1,0 +1,72 @@
+.gate-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #ffe4ec 0%, #fff8f0 45%, #e8f5e9 100%);
+  font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+}
+.gate-mask[hidden],
+html.gate-ok .gate-mask {
+  display: none !important;
+}
+.gate-box {
+  width: min(360px, 88vw);
+  padding: 28px 24px 24px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 111, 145, 0.25);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(255, 111, 145, 0.15);
+}
+.gate-box h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  color: #d81b60;
+  font-weight: 700;
+}
+.gate-box p {
+  margin: 0 0 18px;
+  font-size: 14px;
+  color: #888;
+}
+.gate-box input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border: 1px solid #f8bbd0;
+  border-radius: 10px;
+  font-size: 18px;
+  letter-spacing: 0.2em;
+  text-align: center;
+  outline: none;
+  background: #fff;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.gate-box input:focus {
+  border-color: #ff6f91;
+  box-shadow: 0 0 0 3px rgba(255, 111, 145, 0.15);
+}
+.gate-box button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #ff6f91;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.gate-box button:active {
+  transform: scale(0.98);
+}
+.gate-err {
+  min-height: 20px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #e53935;
+}

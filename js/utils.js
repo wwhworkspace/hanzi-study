@@ -15,6 +15,64 @@ function delStorage(key) {
   localStorage.removeItem(key)
 }
 
+/** 汉字进度：兼容旧版纯数字，以及 { lockInd, updatedAt } */
+function loadLocalProgress() {
+  try {
+    const v = getStorage('lockInd')
+    if (v && typeof v === 'object' && typeof v.lockInd === 'number') {
+      return { lockInd: v.lockInd, updatedAt: v.updatedAt || 0 }
+    }
+    if (typeof v === 'number') {
+      return { lockInd: v, updatedAt: getStorage('lockIndAt') || 0 }
+    }
+    if (typeof v === 'string' && v !== '' && !isNaN(Number(v))) {
+      return { lockInd: Number(v), updatedAt: 0 }
+    }
+  } catch (e) {
+    console.warn('loadLocalProgress 失败 reason=progress_local_fail', e)
+  }
+  return { lockInd: 0, updatedAt: 0 }
+}
+
+function saveLocalProgress(lockInd, updatedAt) {
+  try {
+    const at = updatedAt || Date.now()
+    setStorage('lockInd', { lockInd: lockInd, updatedAt: at })
+    return { lockInd: lockInd, updatedAt: at }
+  } catch (e) {
+    console.warn('saveLocalProgress 失败 reason=progress_local_save_fail', e)
+    return { lockInd: lockInd, updatedAt: updatedAt || Date.now() }
+  }
+}
+
+function progressJsonText(lockInd, updatedAt) {
+  return JSON.stringify({
+    lockInd: lockInd,
+    updatedAt: updatedAt || Date.now(),
+    note: '多端同步：改 lockInd/updatedAt 后推送到 GitHub，其他设备刷新即可拉取'
+  }, null, 2)
+}
+
+/** 拉取仓库内 data/progress.json，与本地比 updatedAt，取较新的 */
+async function syncProgressFromCloud(progressUrl) {
+  try {
+    const local = loadLocalProgress()
+    const url = (progressUrl || 'data/progress.json') + '?t=' + Date.now()
+    const res = await fetch(url, { cache: 'no-store' })
+    if (!res.ok) return local
+    const remote = await res.json()
+    if (!remote || typeof remote.lockInd !== 'number') return local
+    if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
+      saveLocalProgress(remote.lockInd, remote.updatedAt)
+      return { lockInd: remote.lockInd, updatedAt: remote.updatedAt || 0, from: 'cloud' }
+    }
+    return { ...local, from: 'local' }
+  } catch (e) {
+    console.warn('syncProgressFromCloud 失败 reason=progress_cloud_fail', e)
+    return { ...loadLocalProgress(), from: 'local' }
+  }
+}
+
 function playAudio(type) {
   return new Audio(`./audio/${type}.mp3`).play()
 }
