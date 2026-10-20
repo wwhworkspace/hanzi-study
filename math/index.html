@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <title>哪吒学数学</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="../js/lib/vue.global.prod.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- 控制选项区 -->
+    <div class="controls">
+      <select v-model="range"><option value="10">十法</option><option value="99">百法</option></select>
+      <label>
+        <input type="checkbox" v-model="hasSub"> 减法
+      </label>
+      <button @click="generateProblems">生成</button>
+      <button class="on" @click="checkAnswers">检查</button>
+    </div>
+
+    <!-- 题目展示区 -->
+     <div class="main-content">
+       <div class="problems-grid">
+         <div 
+           v-for="(problem, index) in problems" 
+           :key="index"
+           class="problem"
+           @click="selectProblem(index)"
+           :class="{ active: activeIndex === index }"
+         >
+           {{ problem.num1 }} {{ problem.operator }} {{ problem.num2 }} = 
+           <div class="answer-box" :class="{ correct: checked && isCorrect(index), wrong: checked && !isCorrect(index), off: !currentAnswer(index) }">{{ currentAnswer(index) || '?' }}</div>
+         </div>
+       </div>
+     </div>
+
+    <!-- 数字键盘区 -->
+    <div class="number-pad">
+      <button v-for="n in 9" :key="n" @click="inputNumber(n)">{{ n }}</button>
+      <button @click="inputNumber(0)">0</button>
+      <button class="btn-del" @click="deleteNumber">⌫</button>
+      <button class="btn-img" @click="goHanzi">汉字</button>
+    </div>
+  </div>
+
+  <script src="../js/utils.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>

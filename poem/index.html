@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>儿童古诗词学习</title>
+    <link rel="stylesheet" href="index.css">
+    <!-- 引入 Vue.js -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.17/vue.global.prod.min.js"></script> -->
+</head>
+<body id="app" v-cloak>
+    <div class="app_wrap" :class="currentTheme"> <!-- 绑定当前主题类 -->
+        <div class="container" v-show="!showList">
+            <!-- 左侧导航栏 -->
+            <div class="sidebar">
+                <div class="grade-selector">
+                    <h2>选择年级</h2>
+                    <select v-model="currGrade" @change="selectGrade">
+                        <option v-for="(grade, ind) in grades" :value="ind">{{ grade }}</option>
+                    </select>
+                </div>
+                <div class="poetry-list">
+                    <h3>{{ grades[currGrade] }}诗词</h3>
+                    <ul>
+                        <li v-for="poetry in currentPoetryList" :key="poetry.id" @click="selectPoetry(poetry)" :class="{ active: selectedPoetry && selectedPoetry.id === poetry.id }">
+                            {{ poetry.title }}<span v-show="showAuthor"> - {{ poetry.author }}</span>
+                        </li>
+                        <li v-if="currentPoetryList.length === 0" class="no-data">
+                            暂无诗词，请选择其他年级。
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 主题切换 -->
+                <div class="theme-switcher">
+                    <h4>切换主题色</h4>
+                    <span
+                        v-for="theme in themes"
+                        :key="theme.key"
+                        :class="['color-option', { active: currentTheme === theme.key }]"
+                        :style="{ backgroundColor: theme.color }"
+                        @click="changeTheme(theme.key)">
+                    </span>
+                </div>
+            </div>
+
+            <!-- 右侧内容展示 -->
+            <div class="content">
+                <div v-if="selectedPoetry" class="poetry-details">
+                    <div class="audio-controls">
+                        <button @click="prevPoetry" :disabled="!repeatPlay &&!canPrev">上一首<span> ⏪</span></button>
+                        <button @click="toggleAudio" :disabled="!selectedPoetry.audio">{{ isPlaying ? '暂停 ⏸️' : '播放 ▶️' }}</button>
+                        <button @click="nextPoetry" :disabled="!repeatPlay && !canNext">下一首<span> ⏩</span></button>
+                    </div>
+                    <div class="poem-title">
+                        <h2 class="poetry-title">《{{ selectedPoetry.title }}》</h2>
+                        <p class="poetry-meta">
+                            作者：{{ selectedPoetry.author }} ({{ selectedPoetry.dynasty }})
+                        </p>
+                    </div>
+                    <div class="poetry-box">
+
+                        <div class="poetry-left">
+                            <div class="poetry-lines-container">
+                                <div class="poetry-lines" v-for="(line, index) in selectedPoetry.lines" :key="index">
+                                    <div class="pinyin-line">
+                                        <!-- {{ selectedPoetry.pinyins[index] }} -->
+                                        <span v-for="(p, pIndex) in getPinyinChars(selectedPoetry.pinyins[index])" :key="pIndex" class="pinyin-char">{{ p }}</span>
+                                    </div>
+                                    <div class="chinese-line">
+                                        <span v-for="(char, cIndex) in line.split('')" :key="cIndex" class="poetry-char">
+                                            {{ char }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="poetry-visual">
+                                <img :src="selectedPoetry.image" :alt="selectedPoetry.title" class="poetry-image">
+                            </div>
+                        </div>
+                        <div class="poetry-info">
+                            <div class="poetry-translation">
+                                <h3>译文</h3>
+                                <p v-html="selectedPoetry.trans.join('\<br>')"></p>
+                            </div>
+                            <div class="poetry-annotation">
+                                <h3>注释</h3>
+                                <p v-html="selectedPoetry.anno.join('\<br>')"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else class="placeholder">
+                    <h1>📚</h1>
+                    <h2>请在左侧选择一首古诗词开始学习吧！</h2>
+                    <p>✨ 寓教于乐，让古诗词更有趣！ ✨</p>
+                </div>
+            
+            </div>
+        </div>
+        <div class="container-list"  v-show="showList">
+            <div class="poem-list" v-for="(poems, ind) in poemData" :key="ind">
+                <h3>{{ grades[ind] }}诗词</h3>
+                <ul>
+                    <li v-for="poetry in getFilterPoems(poems)" :key="poetry.id" @click="selectPoetry(poetry, false, ind)" :class="{ active: selectedPoetry && selectedPoetry.id === poetry.id }">
+                        {{ poetry.title }}<span v-show="showAuthor"> - {{ poetry.author }}</span>
+                    </li>
+                    <li v-if="currentPoetryList.length === 0" class="no-data">
+                        暂无诗词，请选择其他年级。
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="list-icon">
+            <span  @click="showList = !showList"  :class="[showList && 'on']">📃</span>
+            <span  @click="showAuthor = !showAuthor" :class="[showAuthor && 'on']">👨‍🎓 </span>
+            <span  @click="repeatPlay = !repeatPlay" :class="[repeatPlay && 'on']">🔁 </span>
+            <input type="text" v-show="showList" v-model="keyword" placeholder="诗名或作者名搜索" />
+            <!-- <input type="range" min="0" max="100" v-show="!showList" v-model="rangVal" /> -->
+             <audio src="" v-show="!showList" controls id="audio-item"></audio>
+        </div>
+    </div>
+
+    <script src="../js/lib/vue.global.prod.min.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="data.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

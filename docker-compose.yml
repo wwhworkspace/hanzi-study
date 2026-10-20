@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  hanzi-study:
+    build: .
+    container_name: hanzi-study-app
+    ports:
+      - "8010:80"
+    restart: unless-stopped
+    networks:
+      - hanzi-network
+    volumes:
+      # 可选：挂载nginx日志到宿主机
+      - ./logs:/var/log/nginx
+    environment:
+      - TZ=Asia/Shanghai
+
+networks:
+  hanzi-network:
+    driver: bridge
+
+volumes:
+  logs: 

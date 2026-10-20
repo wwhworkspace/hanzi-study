@@ -1,0 +1,194 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none;}
+body {
+  font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+  margin: 0;
+  background: #f0f9ff;
+}
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-1 { flex: 1; width: 0; }
+.flex-col { display: flex; flex-direction: column; }
+.ai-c { align-items: center; }
+.jc-sb{ justify-content: space-between; }
+.jc-c { justify-content: center; }
+.jc-sa { justify-content: space-around; }
+.p10{padding:10px;}.p15{padding:15px;}.p20{padding:20px;}
+.m10{margin:10px;}.m15{margin:15px;}.m20{margin:20px;}
+.mb10{margin-bottom:10px;}.mb15{margin-bottom:15px;}.mb20{margin-bottom:20px;}
+.mr10{margin-right:10px;}.mr15{margin-right:15px;}.mr20{margin-right:20px;}
+.mx10{margin:0 10px;}.mx15{margin:0 15px;}.mx20{margin:0 20px;}
+.my10{margin:10px 0;}.my15{margin:15px 0;}.my20{margin:20px 0;}
+.w100{width:100%;}
+.h100{height:100%;}
+
+#app {
+  max-width: min(900px, 98%);
+  margin: 0 auto;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin: 15px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.controls label {
+  line-height: 40px;
+  font-size: 18px;
+}
+
+select, button {
+  padding: 6px 16px;
+  font-size: 18px;
+  border-radius: 8px;
+  border: 2px solid #4CAF50;
+  background: white;
+  cursor: pointer;
+}
+button.on {
+  background: #cfe1c5;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.main-content {
+  height: calc(100dvh - 70px - 160px);
+  overflow: auto;   
+  padding: 0 10px 0 10px;
+}
+.problems-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  min-height: 100%;
+}
+
+.problem {
+  font-size: min(5.8vw, 32px);
+  /* padding: 20px; */
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 48%;
+  margin: 4px 0;
+  border: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.problem.active {
+  border: 2px solid #FF9800;
+  box-shadow: 0 4px 8px rgba(255,152,0,0.2);
+}
+
+.answer-box {
+  display: inline-block;
+  min-width: 60px;
+  text-align: center;
+  margin-left: 4px;
+  padding: 5px 6px;
+  background: #fff3e0;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+.answer-box.off {
+  color: #E6A23C;
+}
+
+.correct {
+  background: #c8e6c9 !important;
+  border: 2px solid #4CAF50;
+}
+
+.wrong {
+  background: #ffebee !important;
+  border: 2px solid #f44336;
+}
+
+.number-pad {
+  display: flex;
+  flex-wrap: wrap;
+  grid-template-rows: repeat(2, 1fr);
+  max-width: 480px;
+  margin: 0 auto;
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.number-pad button {
+  font-size: 32px;
+  padding: 0px 0;
+  font-family: 'Comic Sans MS', cursive;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  border-radius: 15px;
+  background: linear-gradient(145deg, #FFB6C1, #87CEEB);
+  /* background: #538063; */
+  box-shadow: 0 6px 10px rgba(255,182,193,0.3);
+  border: 4px solid #FF69B4;
+  border-style: dotted;
+  color: #2d3436;
+  width: 15%;
+  margin: 0 0.7% 8px;
+  transition: all 0.2s;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.number-pad button:active {
+  transform: scale(0.95);
+  background: #ffb347;
+}
+
+.number-pad button.btn-del {
+  background: #ffcdd2;
+  border-color: #ef9a9a;
+  font-size: 24px;
+  padding: 10px;
+}
+.number-pad button.btn-img {
+  background: url('../img/step.webp') no-repeat 3px center / contain;
+  background-position: center center;
+  justify-content: flex-end;
+  padding-right: 6px;
+  font-weight: bold;
+  color: #ff6f91;
+  font-size: 0;
+}
+
+/* 宽度大于800 */
+@media (min-width: 800px) {
+  .problem {
+    width: 32.3%;
+  }
+  .problem {
+    margin: 8px 0;
+  }
+}
+/* 宽度大于700 平板了 */
+@media (min-width: 700px) {
+  .number-pad {
+    max-width: 80%;
+  }
+  .number-pad button {
+    height: 60px;
+    font-size: 40px;
+  }
+  .main-content {
+    height: calc(100dvh - 70px - 180px);
+  }
+  .number-pad button.btn-img {
+    font-size: 22px;
+    background-position: 3px center;
+  }
+}

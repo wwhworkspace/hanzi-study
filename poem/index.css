@@ -1,0 +1,601 @@
+@charset "UTF-8";
+[v-cloak] {
+    display: none !important;
+}
+/* -------------------------- 全局颜色变量 (用于主题切换) -------------------------- */
+:root {
+    --sidebar-bg: #fff5e1; /* 淡黄色 */
+    --sidebar-title-color: #a0522d; /* 深棕色 */
+    --sidebar-list-item-hover-bg: #fff0c9; /* 淡黄 */
+    --sidebar-list-item-active-bg: #f1c40f; /* 金黄 */
+    --sidebar-list-item-color: #664d3a; /* 棕褐色 */
+
+    --content-bg: #ffffff; /* 白色 */
+    --poetry-title-color: #8b4513; /* 咖啡色 */
+    --poetry-char-color: #4a2d0c; /* 深褐色 */
+    --poetry-line-bg: #fcf8e8; /* 淡奶油色 */
+    --poetry-info-title-color: #a0522d; /* 深棕色 */
+
+    --button-bg: #ffb347; /* 儿童橙 */
+    --button-hover-bg: #ffa040; /* 深儿童橙 */
+}
+
+/* -------------------------- 主题类定义 -------------------------- */
+
+/* 默认主题 (保持原样) */
+.theme-default {
+    --sidebar-bg: #fff5e1;
+    --sidebar-title-color: #a0522d;
+    --sidebar-list-item-hover-bg: #fff0c9;
+    --sidebar-list-item-active-bg: #f1c40f;
+    --sidebar-list-item-color: #664d3a;
+
+    --content-bg: #ffffff;
+    --poetry-title-color: #8b4513;
+    --poetry-char-color: #4a2d0c;
+    --poetry-line-bg: #fcf8e8;
+    --poetry-info-title-color: #a0522d;
+
+    --button-bg: #ffb347;
+    --button-hover-bg: #ffa040;
+}
+
+/* 护眼色 1: 柔和绿 */
+.theme-green {
+    --sidebar-bg: #e8f5e9; /* 淡绿色 */
+    --sidebar-title-color: #2e7d32; /* 深绿色 */
+    --sidebar-list-item-hover-bg: #c8e6c9; /* 更淡的绿 */
+    --sidebar-list-item-active-bg: #66bb6a; /* 鲜绿色 */
+    --sidebar-list-item-color: #33691e; /* 深草绿 */
+
+    --content-bg: #f1f8e9; /* 浅黄绿 */
+    --poetry-title-color: #1b5e20; /* 非常深的绿色 */
+    --poetry-char-color: #1b5e20; /* 深绿色 */
+    --poetry-line-bg: #e8f5e9; /* 淡绿色背景 */
+    --poetry-info-title-color: #2e7d32; /* 深绿色 */
+
+    --button-bg: #81c784; /* 中绿色 */
+    --button-hover-bg: #66bb6a; /* 鲜绿色 */
+}
+
+/* 护眼色 2: 淡蓝 */
+.theme-blue {
+    --sidebar-bg: #e3f2fd; /* 淡蓝色 */
+    --sidebar-title-color: #1565c0; /* 深蓝色 */
+    --sidebar-list-item-hover-bg: #bbdefb; /* 更淡的蓝 */
+    --sidebar-list-item-active-bg: #42a5f5; /* 亮蓝色 */
+    --sidebar-list-item-color: #0d47a1; /* 深海军蓝 */
+
+    --content-bg: #e1f5fe; /* 浅天蓝 */
+    --poetry-title-color: #0d47a1; /* 深海军蓝 */
+    --poetry-char-color: #0d47a1; /* 深海军蓝 */
+    --poetry-line-bg: #e3f2fd; /* 淡蓝色背景 */
+    --poetry-info-title-color: #1565c0; /* 深蓝色 */
+
+    --button-bg: #64b5f6; /* 中蓝色 */
+    --button-hover-bg: #42a5f5; /* 亮蓝色 */
+}
+
+/* 护眼色 3: 淡紫 */
+.theme-purple {
+    --sidebar-bg: #f3e5f5; /* 淡紫色 */
+    --sidebar-title-color: #7b1fa2; /* 深紫色 */
+    --sidebar-list-item-hover-bg: #e1bee7; /* 更淡的紫 */
+    --sidebar-list-item-active-bg: #ab47bc; /* 中紫色 */
+    --sidebar-list-item-color: #4a148c; /* 深紫罗兰 */
+
+    --content-bg: #fce4ec; /* 浅粉色 */
+    --poetry-title-color: #4a148c; /* 深紫罗兰 */
+    --poetry-char-color: #4a148c; /* 深紫罗兰 */
+    --poetry-line-bg: #f3e5f5; /* 淡紫色背景 */
+    --poetry-info-title-color: #7b1fa2; /* 深紫色 */
+
+    --button-bg: #ba68c8; /* 中紫色 */
+    --button-hover-bg: #ab47bc; /* 中紫色 */
+}
+
+
+/* -------------------------- 整体样式 (应用变量) -------------------------- */
+* {  margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: #f8f0e3; /* 仍保持一个柔和的整体背景 */
+    background: #FAFAF7;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    overflow: hidden;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+::-webkit-scrollbar-thumb {
+	background-color: #ddd;
+	border-radius: 6px;
+}
+input { background-color: #fff; border-radius: 4px; border: 1px solid #dcdfe6; width: 130px; font-size: 12px; color: #333; line-height: 22px; padding: 0 10px; outline: none; margin-right: 10px; }
+.app_wrap {
+    width: 97%;
+    max-width: 1200px;
+    height: 90dvh;
+    background-color: var(--content-bg); /* 使用变量 */
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    overflow: hidden;
+    border: 2px solid #f2ece5;
+    transition: background-color 0.3s ease; /* 过渡效果 */
+    position: relative;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+.list-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+}
+.list-icon span {
+    cursor: pointer;
+    font-size: 16px;
+    padding: 3px;
+    opacity: .4;
+}
+.list-icon .on {
+    opacity: 1;
+}
+
+/* 左侧导航栏 */
+.sidebar {
+    width: 230px;
+    background-color: var(--sidebar-bg); /* 使用变量 */
+    border-right: 1px solid #e0d6c8;
+    padding: 30px 15px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    transition: background-color 0.3s ease; /* 过渡效果 */
+}
+
+.sidebar h2, .sidebar h3 {
+    color: var(--sidebar-title-color); /* 使用变量 */
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.sidebar h3 {
+    margin-bottom: 15px;
+    border-bottom: 1px dashed #e0d6c8;
+    padding-bottom: 10px;
+}
+
+.grade-selector {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.grade-selector select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d4ac8b;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 1em;
+    color: #5a3a22;
+    cursor: pointer;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%235a3a22" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 16px auto;
+}
+
+.poetry-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.poetry-list li {
+    padding: 7px 8px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.95em;
+    text-align: left;
+    color: var(--sidebar-list-item-color); /* 使用变量 */
+}
+
+.poetry-list li:hover {
+    background-color: var(--sidebar-list-item-hover-bg); /* 使用变量 */
+    color: var(--sidebar-title-color); /* 悬停时颜色指向标题颜色 */
+}
+
+.poetry-list li.active {
+    background-color: var(--sidebar-list-item-active-bg); /* 使用变量 */
+    color: #fff;
+    font-weight: bold;
+}
+
+.poetry-list li.no-data {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    cursor: default;
+}
+
+.container-list {
+    flex: 1;
+    overflow: auto;
+    padding: 22px 10px 10px;
+}
+.poem-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.poem-list h3 {font-size: 0.9em;margin: 4px 0;}
+
+.poem-list li {
+    display: inline-block;
+    padding: 4px 6px;
+    margin: 0 6px 6px 0;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.9em;
+    text-align: left;
+    color: var(--sidebar-list-item-color); /* 使用变量 */
+}
+
+.poem-list li:hover {
+    background-color: var(--sidebar-list-item-hover-bg); /* 使用变量 */
+    color: var(--sidebar-title-color); /* 悬停时颜色指向标题颜色 */
+}
+
+.poem-list li.active {
+    background-color: var(--sidebar-list-item-active-bg); /* 使用变量 */
+    color: #fff;
+    font-weight: bold;
+}
+
+/* 主题切换区域 */
+.theme-switcher {
+    margin-top: 20px;
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px dashed #e0d6c8;
+}
+
+.theme-switcher h4 {
+    color: var(--sidebar-title-color);
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.color-option {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    margin: 0 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+.color-option.active {
+    border-color: #333; /* 当前选中的主题色边框 */
+    transform: scale(1.1);
+}
+
+/* -------------------------- 右侧内容展示 -------------------------- */
+.content {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    background-color: var(--content-bg); /* 使用变量 */
+    transition: background-color 0.3s ease; /* 过渡效果 */
+}
+#audio-item {
+    width: 380px;
+    height: 27px;
+    opacity: .8;
+}
+
+.placeholder {
+    text-align: center;
+    margin-top: 50px;
+    color: #b08a53;
+}
+
+.placeholder h1 {
+    font-size: 4em;
+    margin-bottom: 10px;
+}
+
+.placeholder h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+.placeholder p {
+    font-size: 1.2em;
+}
+
+.poetry-details {
+    width: 100%;
+    text-align: center;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* align-items: center; */
+}
+.poetry-box {
+    display: flex;
+}
+
+.poetry-title {
+    color: var(--poetry-title-color); /* 使用变量 */
+    font-size: 2.2em;
+    margin: 10px 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+.poem-title {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    margin-bottom: 10px;
+}
+
+.poetry-meta {
+    color: #777;
+    font-size: 1.1em;
+    margin: 10px 0 15px;
+}
+
+.poetry-lines-container {
+    margin-bottom: 10px;
+    padding: 20px 40px;
+    background-color: var(--poetry-line-bg); /* 使用变量 */
+    border-radius: 10px;
+    border: 1px dashed #e0d6c8;
+    width: fit-content;
+    display: inline-block;
+    transition: background-color 0.3s ease; /* 过渡效果 */
+}
+
+.poetry-lines {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.pinyin-line {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2px;
+    height: 20px;
+    flex-wrap: nowrap;
+}
+
+.pinyin-char {
+    font-size: 1em;
+    color: var(--sidebar-list-item-color); /* 复用侧边栏字体颜色 */
+    margin: 0 4px;
+    display: inline-block;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.chinese-line {
+    display: flex;
+    justify-content: center;
+    min-height: 40px;
+    flex-wrap: nowrap;
+}
+
+.poetry-char {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--poetry-char-color); /* 使用变量 */
+    margin: 0 3px;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.poetry-visual {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    display: none;
+}
+
+.poetry-image {
+    max-width: 80%;
+    max-height: 250px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    object-fit: cover;
+}
+
+.poetry-info {
+    margin: 0px 0 0 20px;
+    flex: 1;
+}
+
+.poetry-translation, .poetry-annotation {
+    margin-bottom: 11px;
+    background-color: #fefefe; /* 这里暂不使用变量，保持信息块背景统一 */
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    text-align: left;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.03);
+}
+
+.poetry-info h3 {
+    color: var(--poetry-info-title-color); /* 使用变量 */
+    margin-top: 0;
+    font-size: 1.3em;
+    border-bottom: 1px dashed #e0d6c8;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+.poetry-info p {
+    font-size: 1em;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* 音频控制按钮 */
+.audio-controls {
+    display: flex;
+    gap: 15px;
+    margin: 10px 0;
+    justify-content: center;
+}
+
+.audio-controls button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--button-bg); /* 使用变量 */
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(255, 179, 71, 0.4); /* 默认按钮阴影 */
+}
+
+.audio-controls button:hover:not(:disabled) {
+    background-color: var(--button-hover-bg); /* 使用变量 */
+    transform: translateY(-2px);
+}
+
+.audio-controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* emoji 样式 */
+h1, h2 {
+    display: inline-block;
+}
+
+/* 响应式调整 */
+@media (max-width: 1050px) {
+    .content {
+        padding: 20px 14px 14px;
+    }
+    .poetry-lines-container {
+        padding: 16px 20px;
+    }
+    .poetry-info p {
+        font-size: 0.9em;
+    }
+    .poetry-meta {
+        margin-top: 0;
+    }
+}
+@media (max-width: 780px) {
+    .poetry-box {
+        display: block;
+    }
+    .poem-title {
+        display: block;
+    }
+}
+@media (max-width: 760px) {
+    #app {
+        flex-direction: column;
+        height: auto;
+        width: 98%;
+        padding: 10px;
+    }
+    .app_wrap {
+        height: 97dvh;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+    #audio-item {
+        transform: scaleY(0.9);
+        width: 350px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: 30dvh;
+        border-right: none;
+        border-bottom: 1px solid #e0d6c8;
+        padding: 10px;
+        display: none;
+    }
+    .audio-controls span {
+        display: none;
+    }
+
+    .content {
+        padding: 20px 15px;
+    }
+
+    .poetry-info {
+        margin-left: 0;
+    }
+
+    .poetry-translation, .poetry-annotation {
+        /* width: 90%; */
+        margin-bottom: 15px;
+    }
+    .grade-selector select {
+        padding: 6px 10px;
+    }
+    .grade-selector {
+        margin-bottom: 10px;
+    }
+    .audio-controls button {
+        padding: 6px 12px;
+        font-size: 1em;
+    }
+    .poetry-title {
+        font-size: 1.5em;
+    }
+
+    .poetry-image {
+        max-width: 95%;
+    }
+
+    .poetry-lines-container {
+        padding: 6px 15px;
+    }
+    .pinyin-line, .chinese-line {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .pinyin-char, .poetry-char {
+        margin: 2px;
+    }
+}
